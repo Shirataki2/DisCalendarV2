@@ -1,0 +1,7 @@
+/data
+target
+dummy.sql
+.env.dev
+.env.prod
+.env.stage
+/temp

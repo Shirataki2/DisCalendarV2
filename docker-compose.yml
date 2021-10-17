@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  web:
+    build: ./web
+    tty: true
+  db:
+    build: ./db
+    restart: always
+  api:
+    build: ./api
+    tty: true
+  bot:
+    build: ./bot
+    tty: true

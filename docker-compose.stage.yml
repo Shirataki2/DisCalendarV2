@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  web:
+    working_dir: /app
+    entrypoint: bash ./entrypoint.sh --prod
+    volumes:
+      - ./web:/app
+    ports:
+      - 7700:6655
+    env_file:
+      - .env.stage
+  db:
+    volumes:
+      - ./data/stage:/var/lib/postgresql/data
+      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - 7701:5432
+    env_file:
+      - .env.stage
+  api:
+    working_dir: /src
+    entrypoint: bash ./entrypoint.sh --prod
+    volumes:
+      - ./api:/src
+    ports:
+      - 7702:5000
+    env_file:
+      - .env.stage
+  bot:
+    working_dir: /workspace/bot
+    entrypoint: bash ./entrypoint.sh --prod
+    volumes:
+      - ./bot:/workspace/bot
+    env_file:
+      - .env.stage

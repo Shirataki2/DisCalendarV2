@@ -1,0 +1,47 @@
+[config]
+skip_core_tasks = true
+
+[env.ENV]
+source = "${CARGO_MAKE_PROFILE}"
+default_value = "dev"
+mapping = { prod = "prod", production = "prod", stage = "stage" }
+
+[env]
+DOCKER_ARGUMENTS = "-f docker-compose.yml -f docker-compose.${ENV}.yml"
+
+[tasks.build]
+command = "docker-compose"
+args = ["@@split(DOCKER_ARGUMENTS, )", "build", "${@}"]
+
+[tasks.up]
+command = "docker-compose"
+args = ["@@split(DOCKER_ARGUMENTS, )", "up", "-d", "${@}"]
+
+[tasks.force]
+command = "docker-compose"
+args = ["@@split(DOCKER_ARGUMENTS, )", "up", "-d", "--force-recreate", "${@}"]
+
+[tasks.logs]
+command = "docker-compose"
+args = ["@@split(DOCKER_ARGUMENTS, )", "logs", "-f", "--tail=50", "${@}"]
+
+[tasks.ps]
+command = "docker-compose"
+args = ["@@split(DOCKER_ARGUMENTS, )", "ps"]
+
+[tasks.down]
+command = "docker-compose"
+args = ["@@split(DOCKER_ARGUMENTS, )", "down"]
+
+[tasks.exec]
+command = "docker-compose"
+args = ["@@split(DOCKER_ARGUMENTS, )", "exec", "${@}", "bash"]
+
+[tasks.let]
+command = "docker-compose"
+args = ["@@split(DOCKER_ARGUMENTS, )", "exec", "${@}"]
+
+[tasks.web-dev]
+command = "docker-compose"
+args = ["@@split(DOCKER_ARGUMENTS, )", "exec", "web", "yarn", "dev"]
+
