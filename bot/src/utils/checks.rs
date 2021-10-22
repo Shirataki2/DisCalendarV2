@@ -7,6 +7,10 @@ pub async fn has_manage_perms(ctx: Context<'_>) -> Result<bool, BotError> {
         Some(g) => g,
         None => return Ok(false),
     };
+    let owner_id = guild.owner_id;
+
+    let is_owner = author.id == owner_id;
+
     let perms = match guild.member(ctx.discord(), &author.id).await.ok() {
         Some(m) => m.permissions(ctx.discord())?,
         None => return Ok(false),
@@ -15,7 +19,8 @@ pub async fn has_manage_perms(ctx: Context<'_>) -> Result<bool, BotError> {
     let flag = perms.manage_guild()
         || perms.administrator()
         || perms.manage_messages()
-        || perms.manage_roles();
+        || perms.manage_roles()
+        || is_owner;
 
     if !flag {
         poise::send_reply(ctx, |f| {

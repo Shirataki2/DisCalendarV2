@@ -1,5 +1,5 @@
 -- Add migration script here
-CREATE TABLE guilds IF NOT EXISTS (
+CREATE TABLE guilds (
     id SERIAL PRIMARY KEY NOT NULL,
     guild_id TEXT NOT NULL,
     name TEXT NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE guilds IF NOT EXISTS (
     UNIQUE (guild_id)
 );
 
-CREATE TABLE events IF NOT EXISTS (
+CREATE TABLE events (
     id SERIAL PRIMARY KEY NOT NULL,
     guild_id TEXT NOT NULL,
     name TEXT NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE events IF NOT EXISTS (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE event_settings IF NOT EXISTS (
+CREATE TABLE event_settings (
     id SERIAL PRIMARY KEY NOT NULL,
     guild_id TEXT NOT NULL,
     channel_id TEXT NOT NULL
