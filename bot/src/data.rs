@@ -1,6 +1,6 @@
 use sqlx::PgPool;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Data {
     pub pool: PgPool,
 }

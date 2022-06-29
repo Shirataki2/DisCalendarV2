@@ -15,7 +15,7 @@ static INITIALIZED: Lazy<Arc<Mutex<AtomicBool>>> =
 pub async fn handle_event<'a>(
     ctx: &'a serenity::Context,
     event: &'a poise::Event<'a>,
-    _fw: &'a poise::Framework<Data, BotError>,
+    _fw: poise::FrameworkContext<'a, Data, BotError>,
     data: &'a Data,
 ) -> Result<(), BotError> {
     match event {
@@ -142,7 +142,7 @@ pub async fn pre_command(ctx: Context<'_>) {
         poise::Context::Application(ctx) => {
             info!(
                 "{} in {} used SLASH command '{}'",
-                author, channel_name, &ctx.interaction.data.name
+                author, channel_name, &ctx.interaction.data().name
             );
         }
     }

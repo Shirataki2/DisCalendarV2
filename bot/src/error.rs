@@ -7,8 +7,6 @@ pub enum BotError {
     #[error("{0}")]
     Database(#[from] sqlx::Error),
     #[error("{0}")]
-    ArgumentParseError(#[from] poise::ArgumentParseError),
-    #[error("{0}")]
     SlashError(#[from] poise::SlashArgError),
     #[error("`{1}`\n{0}")]
     UserError(String, String),
@@ -22,25 +20,26 @@ impl BotError {
     }
 }
 
-pub async fn on_error(error: BotError, ctx: poise::ErrorContext<'_, crate::data::Data, BotError>) {
-    match ctx {
-        poise::ErrorContext::Setup => panic!("Failed to start bot: {:?}", error),
-        poise::ErrorContext::Command(ctx) => {
-            match error {
-                BotError::InvalidDate(year, month, day, hour, minute) => {
-                    let _ = poise::send_reply(ctx.ctx(), |f| {
-                        f.ephemeral(true);
-                        f.content(format!(
-                            "日付の入力が不正です: `{}/{}/{} {}:{}`",
-                            year, month, day, hour, minute
-                        ))
-                    }).await;
-                }
-                _ => {
-                    error!("Error in command `{}`: {:?}", ctx.command().name(), error)
-                }
-            }
-        }
-        _ => error!("Other error: {:?}", error),
-    }
+pub async fn on_error(error: poise::FrameworkError<'_, crate::data::Data, BotError>) {
+    // match ctx {
+    //     poise::ErrorContext::Setup => panic!("Failed to start bot: {:?}", error),
+    //     poise::ErrorContext::Command(ctx) => {
+    //         match error {
+    //             BotError::InvalidDate(year, month, day, hour, minute) => {
+    //                 let _ = poise::send_reply(ctx.ctx(), |f| {
+    //                     f.ephemeral(true);
+    //                     f.content(format!(
+    //                         "日付の入力が不正です: `{}/{}/{} {}:{}`",
+    //                         year, month, day, hour, minute
+    //                     ))
+    //                 }).await;
+    //             }
+    //             _ => {
+    //                 error!("Error in command `{}`: {:?}", ctx.command().name(), error)
+    //             }
+    //         }
+    //     }
+    //     _ => error!("Other error: {:?}", error),
+    // }
+    error!("{:?}", error);
 }

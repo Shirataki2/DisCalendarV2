@@ -53,6 +53,9 @@ async fn main() {
         .expect("Failed to connect to database");
     info!("Connected to database");
     Framework::build()
+        .intents(
+            poise::serenity_prelude::GatewayIntents::non_privileged()
+        )
         .token(&bot_token)
         .user_data_setup(move |_ctx, _ready, _framework| Box::pin(async move { Ok(Data { pool }) }))
         .options(FrameworkOptions {
@@ -61,7 +64,7 @@ async fn main() {
                 ..Default::default()
             },
             listener: |ctx, e, fw, data| Box::pin(event::handle_event(ctx, e, fw, data)),
-            on_error: |err, ctx| Box::pin(on_error(err, ctx)),
+            on_error: |err| Box::pin(on_error(err)),
             pre_command: |ctx| Box::pin(event::pre_command(ctx)),
             ..Default::default()
         })

@@ -24,7 +24,7 @@ class Command extends Vue {
 export default Command
 </script>
 
-<style>
+<style scoped>
 pre::before {
   content: '';
 }

@@ -5,4 +5,5 @@ cargo install sqlx-cli --no-default-features --features postgres
 sqlx migrate run
 cargo install --path .
 serve
+#bash
 fi
